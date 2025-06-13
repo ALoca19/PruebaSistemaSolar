@@ -242,7 +242,7 @@ class App {
                 //planetInfo.position.x + (planetInfo.name === 'Sol' ? 2 : posicionXPlus),
 				planetInfo.position.x,
                 planetInfo.position.y,
-                planetInfo.position.z 
+                planetInfo.position.z + (planetInfo.name === 'Sol' ? 2 : posicionXPlus)
             );
 
             const sceneGroupTarget = this.renderer.xr.isPresenting

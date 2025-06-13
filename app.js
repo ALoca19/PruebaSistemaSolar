@@ -173,12 +173,16 @@ class App {
 			this.isManualControlEnabled = true;
 			if (this.controls.isLocked) this.controls.unlock();
 			this.sceneGroup.position.y = 1.5; // Subir la escena en VR (ajusta este valor si es necesario)
+			this.sceneGroup.position.x = 1.5; 
+			this.sceneGroup.position.z = 1.5; 
 		});
 
         this.renderer.xr.addEventListener('sessionend', () => {
 		console.log('Sesión VR finalizada');
 		this.isManualControlEnabled = true;
 		this.sceneGroup.position.y = 0; // Restaurar la posición original
+		this.sceneGroup.position.x = 0;
+		this.sceneGroup.position.z = 0;
 		});
     }
 

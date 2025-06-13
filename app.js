@@ -173,8 +173,8 @@ class App {
 			this.isManualControlEnabled = true;
 			if (this.controls.isLocked) this.controls.unlock();
 			this.sceneGroup.position.y = 0; // Subir la escena en VR (ajusta este valor si es necesario)
-			this.sceneGroup.position.x = -5; 
-			this.sceneGroup.position.z = 4; 
+			this.sceneGroup.position.x = -4.5; 
+			this.sceneGroup.position.z = 0; 
 		});
 
         this.renderer.xr.addEventListener('sessionend', () => {
@@ -241,8 +241,8 @@ class App {
             const targetPosition = new THREE.Vector3(
                 //planetInfo.position.x + (planetInfo.name === 'Sol' ? 2 : posicionXPlus),
 				planetInfo.position.x,
-                planetInfo.position.y-5,
-                planetInfo.position.z+4
+                planetInfo.position.y-4.5,
+                planetInfo.position.z 
             );
 
             const sceneGroupTarget = this.renderer.xr.isPresenting

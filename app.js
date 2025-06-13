@@ -149,6 +149,10 @@ class App {
 		this.sounds = {};
 		this.currentAudio = null;
 
+		// VR Controllers
+		this.controllers = [];
+		this.setupVRControllers();
+
 		// Configurar eventos
 		this.setupEvents();
 		this.initScene();
@@ -158,10 +162,38 @@ class App {
 		this.renderer.setAnimationLoop(this.animate.bind(this));
 	}
 
+	setupVRControllers() {
+		// Configurar controladores VR
+		for (let i = 0; i < 2; i++) {
+			const controller = this.renderer.xr.getController(i);
+			controller.addEventListener('selectstart', () => {
+				if (this.isManualControlEnabled && this.renderer.xr.isPresenting) {
+					console.log('Iniciando secuencia de cámara desde controlador VR');
+					this.startCameraSequence();
+				}
+			});
+			this.scene.add(controller);
+			this.controllers.push(controller);
+		}
+
+		// Añadir líneas visuales para los controladores (opcional)
+		const controllerGeometry = new THREE.BufferGeometry().setFromPoints([
+			new THREE.Vector3(0, 0, 0),
+			new THREE.Vector3(0, 0, -1)
+		]);
+		const controllerMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
+		const controllerLine = new THREE.Line(controllerGeometry, controllerMaterial);
+		controllerLine.scale.z = 5;
+
+		this.controllers.forEach((controller) => {
+			controller.add(controllerLine.clone());
+		});
+	}
+
 	setupEvents() {
-		// Activar controles al hacer clic
+		// Activar controles al hacer clic (solo fuera de VR)
 		document.addEventListener('click', () => {
-			if (this.isManualControlEnabled) {
+			if (this.isManualControlEnabled && !this.renderer.xr.isPresenting) {
 				this.controls.lock();
 			}
 		});
@@ -174,7 +206,15 @@ class App {
 			console.log('Controles desbloqueados');
 		});
 
-		// Controles de movimiento y secuencia
+		// Touch event para mobile VR
+		document.addEventListener('touchstart', () => {
+			if (this.isManualControlEnabled && this.renderer.xr.isPresenting) {
+				console.log('Iniciando secuencia de cámara desde toque en pantalla');
+				this.startCameraSequence();
+			}
+		});
+
+		// Controles de movimiento y otras teclas
 		document.addEventListener('keydown', (event) => {
 			switch (event.code) {
 				case 'KeyS':
@@ -211,12 +251,6 @@ class App {
 						)}, z=${this.camera.rotation.z.toFixed(2)}`
 					);
 					break;
-				case 'KeyP':
-					if (this.isManualControlEnabled) {
-						console.log('Iniciando secuencia de cámara');
-						this.startCameraSequence();
-					}
-					break;
 			}
 		});
 
@@ -246,6 +280,21 @@ class App {
 
 		// Redimensionamiento
 		window.addEventListener('resize', this.resize.bind(this));
+
+		// Manejar inicio de sesión VR
+		this.renderer.xr.addEventListener('sessionstart', () => {
+			console.log('Sesión VR iniciada');
+			this.isManualControlEnabled = true;
+			if (this.controls.isLocked) {
+				this.controls.unlock();
+			}
+		});
+
+		// Manejar fin de sesión VR
+		this.renderer.xr.addEventListener('sessionend', () => {
+			console.log('Sesión VR finalizada');
+			this.isManualControlEnabled = true;
+		});
 	}
 
 	startCameraSequence() {
@@ -501,7 +550,7 @@ class App {
 	animate() {
 		TWEEN.update();
 
-		if (this.isManualControlEnabled) {
+		if (this.isManualControlEnabled && !this.renderer.xr.isPresenting) {
 			this.velocity.x = 0;
 			this.velocity.y = 0;
 			this.velocity.z = 0;

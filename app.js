@@ -116,9 +116,9 @@ class App {
         const controllerLine = new THREE.Line(controllerGeometry, controllerMaterial);
         controllerLine.scale.z = 5;
 
-        this.controllers.forEach((controller) => {
-            controller.add(controllerLine.clone());
-        });
+        //this.controllers.forEach((controller) => {
+          //  controller.add(controllerLine.clone());
+        //});
     }
 
     setupEvents() {
@@ -174,7 +174,7 @@ class App {
 			if (this.controls.isLocked) this.controls.unlock();
 			this.sceneGroup.position.y = 1.5; // Subir la escena en VR (ajusta este valor si es necesario)
 			this.sceneGroup.position.x = 0; 
-			this.sceneGroup.position.z = 3.5; 
+			this.sceneGroup.position.z = 5; 
 		});
 
         this.renderer.xr.addEventListener('sessionend', () => {

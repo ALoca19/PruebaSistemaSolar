@@ -240,7 +240,7 @@ class App {
 
             const targetPosition = new THREE.Vector3(
                 planetInfo.position.x + (planetInfo.name === 'Sol' ? 2 : posicionXPlus),
-                planetInfo.position.y + 2,
+                planetInfo.position.y -4,
                 planetInfo.position.z
             );
 

@@ -172,9 +172,9 @@ class App {
 			console.log('Sesión VR iniciada');
 			this.isManualControlEnabled = true;
 			if (this.controls.isLocked) this.controls.unlock();
-			this.sceneGroup.position.y = -5; // Subir la escena en VR (ajusta este valor si es necesario)
+			this.sceneGroup.position.y = 0; // Subir la escena en VR (ajusta este valor si es necesario)
 			this.sceneGroup.position.x = 0; 
-			this.sceneGroup.position.z = 0; 
+			this.sceneGroup.position.z = -5; 
 		});
 
         this.renderer.xr.addEventListener('sessionend', () => {

@@ -241,8 +241,8 @@ class App {
             const targetPosition = new THREE.Vector3(
                 //planetInfo.position.x + (planetInfo.name === 'Sol' ? 2 : posicionXPlus),
 				planetInfo.position.x + (planetInfo.name === 'Sol' ? 2 : posicionXPlus),
-                planetInfo.position.y + 1.5,
-                planetInfo.position.z 
+                planetInfo.position.y,
+                planetInfo.position.z + 1.5 
             );
 
             const sceneGroupTarget = this.renderer.xr.isPresenting

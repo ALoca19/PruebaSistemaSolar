@@ -167,16 +167,19 @@ class App {
 
         window.addEventListener('resize', this.resize.bind(this));
 
-        this.renderer.xr.addEventListener('sessionstart', () => {
-            console.log('Sesión VR iniciada');
-            this.isManualControlEnabled = true;
-            if (this.controls.isLocked) this.controls.unlock();
-        });
+        // En setupEvents (o donde configures los eventos XR), añadimos los ajustes
+		this.renderer.xr.addEventListener('sessionstart', () => {
+			console.log('Sesión VR iniciada');
+			this.isManualControlEnabled = true;
+			if (this.controls.isLocked) this.controls.unlock();
+			this.sceneGroup.position.y = 1.5; // Subir la escena en VR (ajusta este valor si es necesario)
+		});
 
         this.renderer.xr.addEventListener('sessionend', () => {
-            console.log('Sesión VR finalizada');
-            this.isManualControlEnabled = true;
-        });
+		console.log('Sesión VR finalizada');
+		this.isManualControlEnabled = true;
+		this.sceneGroup.position.y = 0; // Restaurar la posición original
+		});
     }
 
     startCameraSequence() {
